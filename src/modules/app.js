@@ -1,5 +1,17 @@
 import axios from 'axios'
 import { DOMParser } from 'xmldom'
+import cache from './cache'
+
+const RSSCache = new cache();
+/*
+console.log(RSSCache.get('pippo'))
+RSSCache.set('pippo','pluto')
+console.log(RSSCache.get('pippo'))
+setTimeout(() => {
+    console.log(RSSCache.get('pippo'))
+}, 1000);
+*/
+
 
 //Api keys
 const api_url = 'https://content.guardianapis.com/search'
@@ -8,26 +20,35 @@ const api_key = 'e8e99174-a76b-4eb4-801f-c6998511fe70'
 //Main request function 
 const main = async (url) => {
     console.log("URL:", url)
-    const uppercase = url.match(/[A-Z]/)
     let status, msg, validUrl,validRss
+    const uppercase = url.match(/[A-Z]/)
     if (uppercase !== null || !url.match(/[a-z]+/)) {
         console.log("Url not valid")
         status = 404
         msg = "Url not valid"
     } else {
-        let feeds = await getFeeds(url)
-        validRss = await validateFeeds(feeds)
-        validRss = new DOMParser().parseFromString(validRss, 'text/xml').documentElement.getElementsByTagName('m:validity')[0].textContent
-
-        if (validRss !== "true") {
-            console.log("RSS not valid")
-            status = 500
-            msg = "RSS not valid"
-        } else {
-            console.log("RSS valid")
+        let feeds = RSSCache.get(url) 
+        if (!feeds) {
+            feeds = await getFeeds(url)
+            validRss = await validateFeeds(feeds)
+            validRss = new DOMParser().parseFromString(validRss, 'text/xml').documentElement.getElementsByTagName('m:validity')[0].textContent
+            if (validRss !== "true") {
+                console.log("RSS not valid")
+                status = 500
+                msg = "RSS not valid"
+            } else {
+                console.log("RSS valid new")
+                status = 200
+                msg = feeds
+            }
+            //RSSCache.set(url, feeds, 10000)
+            RSSCache.set(url, feeds, 600000)
+        }else{
+            console.log("RSS valid cached")
             status = 200
-            msg = feeds
+            msg = RSSCache.get(url);
         }
+
     }
     return { status, msg }
 }

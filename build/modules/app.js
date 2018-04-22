@@ -11,9 +11,23 @@ var _axios2 = _interopRequireDefault(_axios);
 
 var _xmldom = require('xmldom');
 
+var _cache = require('./cache');
+
+var _cache2 = _interopRequireDefault(_cache);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+var RSSCache = new _cache2.default();
+/*
+console.log(RSSCache.get('pippo'))
+RSSCache.set('pippo','pluto')
+console.log(RSSCache.get('pippo'))
+setTimeout(() => {
+    console.log(RSSCache.get('pippo'))
+}, 1000);
+*/
 
 //Api keys
 var api_url = 'https://content.guardianapis.com/search';
@@ -22,14 +36,14 @@ var api_key = 'e8e99174-a76b-4eb4-801f-c6998511fe70';
 //Main request function 
 var main = function () {
     var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(url) {
-        var uppercase, status, msg, validUrl, validRss, feeds;
+        var status, msg, validUrl, validRss, uppercase, feeds;
         return regeneratorRuntime.wrap(function _callee$(_context) {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
                         console.log("URL:", url);
-                        uppercase = url.match(/[A-Z]/);
                         status = void 0, msg = void 0, validUrl = void 0, validRss = void 0;
+                        uppercase = url.match(/[A-Z]/);
 
                         if (!(uppercase !== null || !url.match(/[a-z]+/))) {
                             _context.next = 9;
@@ -39,37 +53,52 @@ var main = function () {
                         console.log("Url not valid");
                         status = 404;
                         msg = "Url not valid";
-                        _context.next = 17;
+                        _context.next = 25;
                         break;
 
                     case 9:
-                        _context.next = 11;
+                        feeds = RSSCache.get(url);
+
+                        if (feeds) {
+                            _context.next = 22;
+                            break;
+                        }
+
+                        _context.next = 13;
                         return getFeeds(url);
 
-                    case 11:
+                    case 13:
                         feeds = _context.sent;
-                        _context.next = 14;
+                        _context.next = 16;
                         return validateFeeds(feeds);
 
-                    case 14:
+                    case 16:
                         validRss = _context.sent;
 
                         validRss = new _xmldom.DOMParser().parseFromString(validRss, 'text/xml').documentElement.getElementsByTagName('m:validity')[0].textContent;
-
                         if (validRss !== "true") {
                             console.log("RSS not valid");
                             status = 500;
                             msg = "RSS not valid";
                         } else {
-                            console.log("RSS valid");
+                            console.log("RSS valid new");
                             status = 200;
                             msg = feeds;
                         }
+                        //RSSCache.set(url, feeds, 10000)
+                        RSSCache.set(url, feeds, 600000);
+                        _context.next = 25;
+                        break;
 
-                    case 17:
+                    case 22:
+                        console.log("RSS valid cached");
+                        status = 200;
+                        msg = RSSCache.get(url);
+
+                    case 25:
                         return _context.abrupt('return', { status: status, msg: msg });
 
-                    case 18:
+                    case 26:
                     case 'end':
                         return _context.stop();
                 }
