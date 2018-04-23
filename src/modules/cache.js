@@ -1,3 +1,4 @@
+/* Memory only cache */
 const cache = class cache{
     
     constructor() {

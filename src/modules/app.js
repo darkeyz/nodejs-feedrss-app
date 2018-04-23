@@ -3,15 +3,6 @@ import { DOMParser } from 'xmldom'
 import cache from './cache'
 
 const RSSCache = new cache();
-/*
-console.log(RSSCache.get('pippo'))
-RSSCache.set('pippo','pluto')
-console.log(RSSCache.get('pippo'))
-setTimeout(() => {
-    console.log(RSSCache.get('pippo'))
-}, 1000);
-*/
-
 
 //Api keys
 const api_url = 'https://content.guardianapis.com/search'
@@ -50,7 +41,8 @@ const main = async (url) => {
         }
 
     }
-    return { status, msg }
+    const response = { status, msg }
+    return response
 }
 
 //Replace xml special characters in entities
@@ -128,4 +120,4 @@ const validateFeeds = (feeds) => {
     });
 }
 
-export { main }
+export { main, replaceSpecialChars, toXmlRss }

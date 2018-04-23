@@ -1,5 +1,4 @@
 //App setup
-import 'babel-polyfill'
 import express from 'express'
 const app = express()
 app.set('case sensitive routing', true);

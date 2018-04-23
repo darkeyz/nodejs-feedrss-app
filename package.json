@@ -2,11 +2,10 @@
   "name": "feed_rss_the_guardian",
   "version": "1.0.0",
   "description": "- npm init",
-  "main": "src/server.js",
+  "main": "starter.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel src -d build -w",
-    "app": "nodemon build/server.js"
+    "test": "mocha --require babel-register --require babel-polyfill -w",
+    "app": "nodemon starter.js"
   },
   "author": "ovrclokz",
   "license": "ISC",
@@ -20,6 +19,8 @@
     "babel-cli": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "babel-register": "^6.26.0"
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "mocha": "^5.1.1"
   }
 }
