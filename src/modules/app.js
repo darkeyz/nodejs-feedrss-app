@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { DOMParser } from 'xmldom'
 import cache from './cache'
+import log from './log'
 
 const RSSCache = new cache();
 
@@ -10,11 +11,11 @@ const api_key = 'e8e99174-a76b-4eb4-801f-c6998511fe70'
 
 //Main request function 
 const main = async (url) => {
-    console.log("URL:", url)
+    log.info(url)
     let status, msg, validUrl,validRss
     const uppercase = url.match(/[A-Z]/)
     if (uppercase !== null || !url.match(/[a-z]+/)) {
-        console.log("Url not valid")
+        log.info("Url not valid")
         status = 404
         msg = "Url not valid"
     } else {
@@ -24,18 +25,18 @@ const main = async (url) => {
             validRss = await validateFeeds(feeds)
             validRss = new DOMParser().parseFromString(validRss, 'text/xml').documentElement.getElementsByTagName('m:validity')[0].textContent
             if (validRss !== "true") {
-                console.log("RSS not valid")
+                log.info("RSS not valid")
                 status = 500
                 msg = "RSS not valid"
             } else {
-                console.log("RSS valid new")
+                log.info("RSS valid new")
                 status = 200
                 msg = feeds
             }
-            RSSCache.set(url, feeds, 10000)
-            //RSSCache.set(url, feeds, 600000)
+            //RSSCache.set(url, feeds, 10000)
+            RSSCache.set(url, feeds, 600000)
         }else{
-            console.log("RSS valid cached")
+            log.info("RSS valid cached")
             status = 200
             msg = RSSCache.get(url);
         }
@@ -64,14 +65,11 @@ const toXmlRss = (feeds) =>{
     feedsXml += "<link>" + "https://www.theguardian.com" + "</link>"
 
     for (let i = 0; i < feeds.length; i++) {
-        //console.log(i);
         feedsXml += "<item>"
-        //feedsXml += "<title>" + feeds[i].webTitle.replace('&','&amp;') + "</title>"
         feedsXml += "<title>" + replaceSpecialChars(feeds[i].webTitle) + "</title>"
         feedsXml += "<description>" + replaceSpecialChars(feeds[i].webTitle) + "</description>"
         feedsXml += "<link>" + replaceSpecialChars(feeds[i].webUrl) + "</link>"
         feedsXml += "</item>"
-        //console.log>feedsXml);
     }
 
     feedsXml += "</channel>"
@@ -96,7 +94,7 @@ const getFeeds = (url) =>{
                 resolve(toXmlRss(feeds))
             })
             .catch(function (error) {
-                console.log(error);
+                log.error(error);
             });
     });
 }
@@ -115,7 +113,7 @@ const validateFeeds = (feeds) => {
             resolve(response.data)
         })
         .catch(function (error) {
-            console.log(error);
+            log.info(error);
         });
     });
 }

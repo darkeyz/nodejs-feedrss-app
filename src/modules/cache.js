@@ -1,5 +1,5 @@
 /* Memory only cache */
-const cache = class cache{
+const cache = class Cache{
     
     constructor() {
         this.entries = {}
