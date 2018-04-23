@@ -1,5 +1,6 @@
 //App setup
 import express from 'express'
+import log from './modules/log'
 const app = express()
 app.set('case sensitive routing', true);
 
@@ -17,5 +18,5 @@ app.use(async (req, res, next) => {
 
 //port
 app.listen(8080, () => {
-    console.log('App listening on port 8080')
+    log.info('Server -> App listening on port 8080')
 })
