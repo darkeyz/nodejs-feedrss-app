@@ -32,8 +32,8 @@ const main = async (url) => {
                 status = 200
                 msg = feeds
             }
-            //RSSCache.set(url, feeds, 10000)
-            RSSCache.set(url, feeds, 600000)
+            RSSCache.set(url, feeds, 10000)
+            //RSSCache.set(url, feeds, 600000)
         }else{
             console.log("RSS valid cached")
             status = 200

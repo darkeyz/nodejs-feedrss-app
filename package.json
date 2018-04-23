@@ -4,7 +4,11 @@
   "description": "- npm init",
   "main": "starter.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "mocha --require babel-register --require babel-polyfill -w",
+=======
+    "test": "mocha --require babel-register --require babel-polyfill -g Cache -w",
+>>>>>>> 10aebfa4e67d0f532543acb598c65c7127be5e40
     "app": "nodemon starter.js"
   },
   "author": "ovrclokz",

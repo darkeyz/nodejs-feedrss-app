@@ -7,14 +7,22 @@ import { main, replaceSpecialChars, toXmlRss } from '../src/modules/app'
 describe('App',() => {
 
     describe('#main',() =>{
+<<<<<<< HEAD
         it.skip('should return Invalid Url with status 404',async () => {
+=======
+        it('should return Invalid Url with status 404',async () => {
+>>>>>>> 10aebfa4e67d0f532543acb598c65c7127be5e40
             const res1 = await main("UPPeRCaSE")
             const res2 = await main("uppercasE") 
             expect(res1).to.deep.include({ status: 404, msg: "Url not valid"})
             expect(res2).to.deep.include({ status: 404, msg: "Url not valid"})
         })
 
+<<<<<<< HEAD
         it.skip('should return status 200',async () => {
+=======
+        it('should return status 200',async () => {
+>>>>>>> 10aebfa4e67d0f532543acb598c65c7127be5e40
             const res = await main("lowercase")
             expect(res).to.deep.include({ status: 200})
         })
