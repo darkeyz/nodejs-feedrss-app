@@ -5,7 +5,7 @@
   "main": "starter.js",
   "scripts": {
     "test": "mocha --require babel-register --require babel-polyfill",
-    "app": "nodemon starter.js"
+    "app": "nodemon --ignore src/log/*.json starter.js"
   },
   "author": "ovrclokz",
   "license": "ISC",

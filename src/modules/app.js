@@ -11,7 +11,7 @@ const api_key = 'e8e99174-a76b-4eb4-801f-c6998511fe70'
 
 //Main request function 
 const main = async (url) => {
-    log.info( "Url -> " + url)
+    log.info("Url -> " + url)
     let status, msg, validUrl,validRss
     const uppercase = url.match(/[A-Z]/)
     if (uppercase !== null || !url.match(/[a-z]+/)) {
