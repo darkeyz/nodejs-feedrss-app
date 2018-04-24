@@ -4,6 +4,7 @@
   "description": "- npm init",
   "main": "starter.js",
   "scripts": {
+    "lint": "eslint src/modules --fix",
     "test": "mocha --require babel-register --require babel-polyfill",
     "app": "nodemon --ignore src/log/*.json starter.js"
   },
@@ -21,6 +22,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
+    "eslint": "^4.19.1",
     "mocha": "^5.1.1"
   }
 }
