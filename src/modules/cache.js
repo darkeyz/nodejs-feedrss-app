@@ -1,3 +1,5 @@
+import log from './log'
+
 /* Memory only cache */
 const cache = class Cache{
     
@@ -15,7 +17,7 @@ const cache = class Cache{
 
         if(timeout){
             setTimeout(() => {
-                console.log("Cache for " + key + " expired!!")
+                log.info("Cache for " + key + " expired!!")
                 self.delete(key) 
             }, timeout);
         }

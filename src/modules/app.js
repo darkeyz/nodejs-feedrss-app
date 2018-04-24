@@ -11,13 +11,19 @@ const api_key = 'e8e99174-a76b-4eb4-801f-c6998511fe70'
 
 //Main request function 
 const main = async (url) => {
-    log.info("Url -> " + url)
+    if(url !== "/favicon.ico"){
+        log.info("Url -> " + url)
+    }
     let status, msg, validUrl,validRss
     const uppercase = url.match(/[A-Z]/)
     if (uppercase !== null || !url.match(/[a-z]+/)) {
         log.info("Url not valid")
         status = 404
         msg = "Url not valid"
+    } else if (url === "/favicon.ico"){
+        status = 200
+        log.debug("favicon.ico")
+        msg = "favicon.ico"
     } else {
         let feeds = RSSCache.get(url) 
         if (!feeds) {
@@ -74,6 +80,8 @@ const toXmlRss = (feeds) =>{
 
     feedsXml += "</channel>"
     feedsXml += "</rss>"
+
+    log.debug(feedsXml)
     return feedsXml;
 }
 
@@ -110,7 +118,7 @@ const validateFeeds = (feeds) => {
             }
         })
         .then((response) => {
-            //log.debug(response.data)
+            log.debug(response.data)
             resolve(response.data)
         })
         .catch(function (error) {

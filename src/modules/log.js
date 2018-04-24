@@ -12,6 +12,7 @@ const log = class Log {
             const color = "\x1b[31m%s\x1b[0m"
             const log = 'Error: ' + el
             console.error(color , log)
+            this.writeLog(log)
         }
     }
     
@@ -29,6 +30,7 @@ const log = class Log {
             const color = "\x1b[33m%s\x1b[0m"
             const log = 'Debug: ' + el
             console.log(color , log)
+            this.writeLog(log)
         }
     }
 
@@ -40,26 +42,36 @@ const log = class Log {
         const currentHour = [date.getHours(), date.getMinutes(), date.getSeconds()].join(':') 
 
         const file = './src/log/log-' + currentDay + '.json'
-        fs.open(file, 'r+', function (err, fd) {
-            if (err) {
-                let json = {}
-                json[currentHour] = []
-                json[currentHour].push(log)
-                fs.writeFile(file, JSON.stringify(json), function (err) {
-                    if (err) {console.log(err);}
-                });
-            } else {
-                fs.readFile(file, function (err, data) {
-                    let json = JSON.parse(data)
-                    if (typeof json[currentHour] === "undefined"){
-                        json[currentHour] = []
-                    }
-                    json[currentHour].push(log)
-                    fs.writeFile(file, JSON.stringify(json))
-                })
+        const fileExists = fs.existsSync(file)
+
+        //Check if file exists and create it with empty json
+        let json = {}
+        if(!fileExists){
+            try{
+                fs.writeFileSync(file,JSON.stringify(json))
+            } catch(err){
+                console.log(err)
             }
-        });
+        }
+
+        //read file
+        json = fs.readFileSync(file)
+        json = JSON.parse(json)
+
+        //check if key is already set 
+        if (json[currentHour] === undefined) {
+            json[currentHour] = []
+        }
+        json[currentHour].push(log)
+
+        //append log
+        try {
+            fs.writeFileSync(file, JSON.stringify(json))
+        } catch (err) {
+            console.log(err)
+        }
     }
+   
 }
 
 export default new log()

@@ -1,5 +1,5 @@
 const config = {
-    logLevel: 3
+    logLevel: 2
 }
 
 export default config
