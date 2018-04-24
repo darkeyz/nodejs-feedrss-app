@@ -41,8 +41,12 @@ const log = class Log {
 		let date = new Date()
 		const month = (date.getMonth() < 10) ? "0" + date.getMonth() : date.getMonth()
 		const day = (date.getDate() < 10) ? "0" + date.getDate() : date.getDate()
+		const hours = (date.getHours() < 10) ? "0" + date.getHours() : date.getHours()
+		const minutes = (date.getMinutes() < 10) ? "0" + date.getMinutes() : date.getMinutes()
+		const secondes = (date.getSeconds() < 10) ? "0" + date.getSeconds() : date.Secondes()
+		
 		const currentDay = [date.getFullYear(), month, day].join("-")
-		const currentHour = [date.getHours(), date.getMinutes(), date.getSeconds()].join(":")
+		const currentHour = [hours, minutes, secondes].join(":")
 
 		const file = "./src/log/log-" + currentDay + ".json"
 		const fileExists = fs.existsSync(file)
