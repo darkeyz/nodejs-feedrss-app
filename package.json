@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint src/modules --fix",
     "test": "mocha --require babel-register --require babel-polyfill",
-    "app": "nodemon --ignore src/log/*.json starter.js"
+    "start": "nodemon --ignore src/log/*.json starter.js"
   },
   "author": "ovrclokz",
   "license": "ISC",
