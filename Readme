@@ -19,6 +19,12 @@ Every "hours-minutes-secondes" is an array of related logs
 
 The cache persistence in MEMORY-ONLY 
 
+# RSS validator
+
+From W3C Feed Validation SOAP 1.2 Web Service api returning a soap response
+with <m:validity>false</m:validity> -> invalid document
+and <m:validity>true</m:validity> -> valid document
+
 
 
 
