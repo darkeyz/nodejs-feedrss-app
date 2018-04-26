@@ -1,1 +1,27 @@
+ # Run and test app
+
+ Use "npm start" or "npm run start" to start the app
+ Use "npm test" to excecute test in "/test" folder
+ 	|#main tests are skipped by default to prevent caching data 
+
+# Source files structure
+
+all the app source codes are in the folder  "/src" and test code in "/test"
+
+# Logs
+
+set log level in "/src/modules/config.js"
+values : 1 -> error | 2 -> info | 3 -> debug
+all logs are saved(JSON) in a log file in "src/modules/log.js" whith name of the current day
+Every "hours-minutes-secondes" is an array of related logs
+
+# Cache
+
+The cache persistence in MEMORY-ONLY 
+
+
+
+
+ 
+
  
